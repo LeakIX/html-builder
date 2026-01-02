@@ -11,25 +11,9 @@ A minimal, zero-dependency, `no_std` HTML builder for Rust following the
 - Automatic XSS protection via HTML/attribute escaping
 - Self-closing tag detection
 
-## Usage
+## Documentation
 
-```rust
-use html_builder::{Html, Element};
-
-let html = Html::new()
-    .raw("<!DOCTYPE html>")
-    .elem("html", |e| e
-        .attr("lang", "en")
-        .child("head", |e| e
-            .child("meta", |e| e.attr("charset", "UTF-8"))
-            .child("title", |e| e.text("Hello"))
-        )
-        .child("body", |e| e
-            .child("h1", |e| e.text("Hello, World!"))
-        )
-    )
-    .build();
-```
+See the [API documentation](https://leakix.github.io/html-builder/html_builder/).
 
 ## License
 
