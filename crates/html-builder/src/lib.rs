@@ -71,6 +71,9 @@ extern crate alloc;
 #[cfg(feature = "typed")]
 pub mod typed;
 
+#[cfg(feature = "macros")]
+pub use html_macro::html;
+
 use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 

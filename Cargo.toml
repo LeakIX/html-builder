@@ -11,3 +11,8 @@ repository = "https://github.com/LeakIX/html-builder"
 [workspace.dependencies]
 html-elements = { path = "crates/html-elements" }
 html-attributes = { path = "crates/html-attributes" }
+html-builder = { path = "crates/html-builder" }
+html-macro = { path = "crates/html-macro" }
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "2", features = ["full", "parsing", "extra-traits"] }
