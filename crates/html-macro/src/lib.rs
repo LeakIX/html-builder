@@ -7,10 +7,8 @@
 //!
 //! ## Syntax
 //!
-//! ```rust,ignore
+//! ```rust
 //! use html_macro::html;
-//! use html_builder::typed::Element;
-//! use html_elements::*;
 //!
 //! let nav = html! {
 //!     ul.class("nav") {
@@ -18,79 +16,102 @@
 //!         li { a.href("/about") { "About" } }
 //!     }
 //! };
+//!
+//! assert!(nav.render().contains(r#"<ul class="nav">"#));
 //! ```
 //!
 //! ### Elements
 //!
 //! Elements are written as identifiers followed by optional attributes and children:
 //!
-//! ```rust,ignore
-//! html! { div }                    // Empty div
-//! html! { div { } }                // Empty div with explicit braces
-//! html! { div { "text" } }         // Div with text
-//! html! { div { span { } } }       // Nested elements
+//! ```rust
+//! use html_macro::html;
+//!
+//! let _ = html! { div };                    // Empty div
+//! let _ = html! { div { } };                // Empty div with explicit braces
+//! let _ = html! { div { "text" } };         // Div with text
+//! let _ = html! { div { span { } } };       // Nested elements
 //! ```
 //!
 //! ### Attributes
 //!
 //! Attributes use method-call syntax with `.`:
 //!
-//! ```rust,ignore
-//! html! { div.class("container") }
-//! html! { div.id("main").class("wrapper") }
-//! html! { input.type_("text").name("email") }
-//! html! { a.href("/").target("_blank") }
+//! ```rust
+//! use html_macro::html;
+//!
+//! let _ = html! { div.class("container") };
+//! let _ = html! { div.id("main").class("wrapper") };
+//! let _ = html! { input.type_("text").name("email") };
+//! let _ = html! { a.href("/").target("_blank") };
 //! ```
 //!
 //! ### Text Content
 //!
 //! String literals inside braces become text content:
 //!
-//! ```rust,ignore
-//! html! { p { "Hello, World!" } }
-//! html! { span { "Multiple " "strings " "concatenated" } }
+//! ```rust
+//! use html_macro::html;
+//!
+//! let p = html! { p { "Hello, World!" } };
+//! assert_eq!(p.render(), "<p>Hello, World!</p>");
+//!
+//! let span = html! { span { "Multiple " "strings " "concatenated" } };
+//! assert_eq!(span.render(), "<span>Multiple strings concatenated</span>");
 //! ```
 //!
 //! ### Rust Expressions
 //!
 //! Use `#` prefix to embed Rust expressions:
 //!
-//! ```rust,ignore
+//! ```rust
+//! use html_macro::html;
+//!
 //! let name = "World";
-//! html! { p { "Hello, " #name "!" } }
+//! let p = html! { p { "Hello, " #name "!" } };
+//! assert_eq!(p.render(), "<p>Hello, World!</p>");
 //!
 //! let classes = "btn btn-primary";
-//! html! { button.class(#classes) { "Click" } }
+//! let btn = html! { button.class(#classes) { "Click" } };
+//! assert!(btn.render().contains("btn btn-primary"));
 //! ```
 //!
 //! ### Loops
 //!
 //! Use `for` to iterate:
 //!
-//! ```rust,ignore
+//! ```rust
+//! use html_macro::html;
+//! use html_builder::typed::Element;
+//! use html_elements::Li;
+//!
 //! let items = vec!["Apple", "Banana", "Cherry"];
-//! html! {
+//! let ul = html! {
 //!     ul {
 //!         for item in #items {
 //!             li { #item }
 //!         }
 //!     }
-//! }
+//! };
+//! assert!(ul.render().contains("<li>Apple</li>"));
 //! ```
 //!
 //! ### Conditionals
 //!
 //! Use `if` for conditional rendering:
 //!
-//! ```rust,ignore
+//! ```rust
+//! use html_macro::html;
+//!
 //! let show = true;
-//! html! {
+//! let div = html! {
 //!     div {
 //!         if #show {
 //!             span { "Visible" }
 //!         }
 //!     }
-//! }
+//! };
+//! assert!(div.render().contains("Visible"));
 //! ```
 
 use proc_macro::TokenStream;
